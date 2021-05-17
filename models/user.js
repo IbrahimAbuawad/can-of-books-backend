@@ -67,15 +67,16 @@ const booksFunc = () => {
 
 }
 
-
-const getCatsByOwner = (req, res) => {
+booksFunc();
+const getBooksByOwner = (req, res) => {
     const { email } = req.query;
     console.log(email);
-    userModel.find({ email: email }, function (err, ownerData) {
-        if (err) res.send('didnt work.');
-        console.log(ownerData[0].books)
-        res.send(ownerData[0].books);
+    userModel.find({ email: email }, function (err, element) {
+        if (err) res.send('fail');
+        console.log(element[0].books)
+        res.send(element[0].books);
+        // res.send(element[0].books.map(desc => desc.description));
     });
 }
 
-module.exports = getCatsByOwner;
+module.exports = getBooksByOwner;

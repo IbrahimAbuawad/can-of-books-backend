@@ -1,14 +1,14 @@
 'use strict';
 
-require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
-const getCatsByOwner = require('./models/user');
+const getBooksByOwner = require('./models/user');
 const app = express();
 app.use(cors());
-
+require('dotenv').config();
 
 
 
@@ -21,7 +21,7 @@ app.get('/', (request, response) => {
 
 })
 
-app.get('/books', getCatsByOwner)
+app.get('/books', getBooksByOwner)
 
 
 
