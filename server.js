@@ -5,17 +5,25 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
-
+const getCatsByOwner = require('./models/user');
 const app = express();
 app.use(cors());
 
+
+
+
 const PORT = process.env.PORT || 3001;
+
 
 app.get('/', (request, response) => {
 
-  response.send('Hello Test');
+  response.send('booksFunc');
 
 })
+
+app.get('/books', getCatsByOwner)
+
+
 
 app.get('/test', (request, response) => {
 
