@@ -6,15 +6,13 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 // const { postBooksByPerson, getBooksByOwner } = require('./models/user');
-
+const mongoose = require('mongoose');
+require('dotenv').config();
 const app = express();
 app.use(cors());
-require('dotenv').config();
-const mongoose = require('mongoose');
+
+app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/books', { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-
 
 const PORT = process.env.PORT || 3001;
 
@@ -84,58 +82,66 @@ const booksFunc = () => {
 
 }
 
-booksFunc();
+//booksFunc();
+
+
+
 
 const getBooksByOwner = (req, res) => {
     const { email } = req.query;
-    console.log(email);
+    //   console.log(email);
     userModel.find({ email: email }, function (err, element) {
         if (err) res.send('fail');
-        console.log(element[0].books)
+        // console.log(element[0].books)
         res.send(element[0].books);
+
         // res.send(element[0].books.map(desc => desc.description));
     });
 }
 
+
+
 const postBooksByPerson = (req, res) => {
-    const { name, description, status, email } = req.body;
+    const { bookName, bookDescription, bookStatus, email } = req.body;
     // console.log(req.body);
-    userModel.find({ email: email }, (error, element) => {
+    userModel.find({ email: email }, (error, myData) => {
         myData[0].books.push({
 
-            description: description,
-            status: status,
-            name: name
+
+            description: bookDescription,
+            status: bookStatus,
+            name: bookName
         })
-        element[0].save();
-        res.send(element[0].books);
+        myData[0].save();
+        res.send(myData[0].books);
     })
 }
 
-// module.exports = { getBooksByOwner, postBooksByPerson };
-
-
 app.get('/', (request, response) => {
-
-  response.send('booksFunc');
-
+    response.send('booksFunc');
 })
-
 app.get('/books', getBooksByOwner);
 
 
-
 app.post('/books', postBooksByPerson);
+// module.exports = { getBooksByOwner, postBooksByPerson };
+
+
+
+
+
+
+
 
 
 
 app.get('/test', (request, response) => {
 
-  // TODO: 
-  // STEP 1: get the jwt from the headers
-  // STEP 2. use the jsonwebtoken library to verify that it is a valid jwt
-  // jsonwebtoken dock - https://www.npmjs.com/package/jsonwebtoken
-  // STEP 3: to prove that everything is working correctly, send the opened jwt back to the front-end
+    // TODO: 
+    // STEP 1: get the jwt from the headers
+    // STEP 2. use the jsonwebtoken library to verify that it is a valid jwt
+    // jsonwebtoken dock - https://www.npmjs.com/package/jsonwebtoken
+    // STEP 3: to prove that everything is working correctly, send the opened jwt back to the front-end
 
 })
 
