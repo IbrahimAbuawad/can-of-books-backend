@@ -102,36 +102,49 @@ const getBooksByOwner = (req, res) => {
 
 
 const postBooksByPerson = (req, res) => {
-    const { bookName, bookDescription, bookStatus, email } = req.body;
+    const { name, description, status, email } = req.body;
     // console.log(req.body);
     userModel.find({ email: email }, (error, myData) => {
         myData[0].books.push({
 
 
-            description: bookDescription,
-            status: bookStatus,
-            name: bookName
+            description: description,
+            status: status,
+            name: name
         })
         myData[0].save();
         res.send(myData[0].books);
     })
 }
 
+const deleteBooksByPerson = (req, res) => {
+    const index = Number(req.params.index)
+    const { email } = req.query;
+    userModel.find({ email: email }, (error, myData) => {
+
+        const newBooksArr = myData[0].books.filter((book, idx) => {
+            return idx !== index;
+        });
+
+     
+        myData[0].books = newBooksArr;
+        myData[0].save();
+
+        // res.send(myData[0].books);
+    })
+}
+
 app.get('/', (request, response) => {
     response.send('booksFunc');
 })
+
 app.get('/books', getBooksByOwner);
 
 
 app.post('/books', postBooksByPerson);
-// module.exports = { getBooksByOwner, postBooksByPerson };
 
 
-
-
-
-
-
+app.delete('/books/:index',deleteBooksByPerson);
 
 
 
