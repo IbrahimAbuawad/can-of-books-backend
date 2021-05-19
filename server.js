@@ -17,9 +17,6 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
 
-
-
-
 app.get('/', (request, response) => {
     response.send('booksFunc');
 })
@@ -33,7 +30,7 @@ app.post('/books', user.postBooksByPerson);
 app.delete('/books/:index', user.deleteBooksByPerson);
 
 
-app.put('./books/:index', user.updateBookForOwner);
+app.put('/books/:index', user.updateBookForOwner);
 
 
 app.get('/test', (request, response) => {
