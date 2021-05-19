@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb://localhost:27017/books', { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-
 const BookSchema = new mongoose.Schema({
     description: String,
     status: String,
@@ -133,13 +131,17 @@ const updateBookForOwner = (req, res) => {
     userModel.find({ email: email }, (err, myData) => {
 
         myData[0].books.splice(index, 1, {
+            status: status,
             name: name,
-            description: description,
-            status: status
+            description: description
         });
+        console.log(myData[0].books);
         myData[0].save();
-        res.send(myData[0].books)
+        res.send(myData[0].books);
+        if (err) { res.send(`YOU GOT AN ERROR! your error: ${err}`) };
+
+
     });
 }
-//
+
 module.exports = { getBooksByOwner, postBooksByPerson, deleteBooksByPerson, updateBookForOwner };
