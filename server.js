@@ -11,7 +11,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 
-app.use(express.json());
+app.use(express.json());//recode the request body
 mongoose.connect('mongodb://localhost:27017/books', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const PORT = process.env.PORT || 3001;
@@ -118,15 +118,15 @@ const postBooksByPerson = (req, res) => {
 }
 
 const deleteBooksByPerson = (req, res) => {
-    const index = Number(req.params.index)
-    const { email } = req.query;
+    const index = Number(req.params.index) //to get the index
+    const { email } = req.query; //destructure the value from the obj (get the value from the body)
     userModel.find({ email: email }, (error, myData) => {
 
         const newBooksArr = myData[0].books.filter((book, idx) => {
             return idx !== index;
         });
 
-     
+
         myData[0].books = newBooksArr;
         myData[0].save();
 
@@ -144,7 +144,7 @@ app.get('/books', getBooksByOwner);
 app.post('/books', postBooksByPerson);
 
 
-app.delete('/books/:index',deleteBooksByPerson);
+app.delete('/books/:index', deleteBooksByPerson);
 
 
 
